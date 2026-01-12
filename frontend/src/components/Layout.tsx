@@ -21,7 +21,7 @@ export default function Layout() {
                 <Star className="w-6 h-6 text-psa-gold-500" />
               </div>
               <div>
-                <h1 className="font-display text-xl font-bold">PSA Event Analyzer</h1>
+                <h1 className="font-display text-xl font-bold">PSA Andaza</h1>
                 <p className="text-psa-green-200 text-xs">UWaterloo Pakistani Students Association</p>
               </div>
             </Link>
@@ -60,7 +60,7 @@ export default function Layout() {
       </main>
 
       <footer className="border-t border-psa-green-100 mt-12 py-6 text-center text-sm text-gray-500">
-        <p>PSA Event Value Analyzer • Balancing Revenue & Experience</p>
+        <p>PSA Andaza • Balancing Revenue & Experience</p>
       </footer>
     </div>
   )

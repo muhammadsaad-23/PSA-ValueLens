@@ -1,4 +1,4 @@
-# PSA Event Value Analyzer
+# PSA Andaza
 
 A tool for UWaterloo's Pakistani Students Association to evaluate events using a balanced "Value Score" that considers both operational success (revenue) and participant experience (feedback).
 

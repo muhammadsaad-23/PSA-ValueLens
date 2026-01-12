@@ -103,7 +103,7 @@ export default function Results() {
 
       <div className="mb-8">
         <h2 className="font-display text-3xl font-bold gradient-text">{score.event_name}</h2>
-        <p className="text-gray-600 mt-1">Event Value Analysis</p>
+        <p className="text-gray-600 mt-1">Andaza Analysis</p>
       </div>
 
       <motion.div

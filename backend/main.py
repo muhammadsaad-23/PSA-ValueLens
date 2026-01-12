@@ -22,7 +22,7 @@ async def lifespan(app: FastAPI):
     init_db()
     yield
 
-app = FastAPI(title="PSA Event Value Analyzer", lifespan=lifespan)
+app = FastAPI(title="PSA Andaza", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
