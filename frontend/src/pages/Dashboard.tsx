@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Plus, Users, DollarSign, ChevronRight, Sparkles, X, Zap, TrendingUp } from 'lucide-react'
+import { Plus, Users, DollarSign, ChevronRight, Sparkles, X, Zap, TrendingUp, Trash2 } from 'lucide-react'
 
 interface Event {
   id: number
@@ -12,20 +12,6 @@ interface Event {
   has_score: boolean
 }
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1
-    }
-  }
-}
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: { opacity: 1, y: 0 }
-}
 
 export default function Dashboard() {
   const [events, setEvents] = useState<Event[]>([])
@@ -34,7 +20,6 @@ export default function Dashboard() {
   const [attendance, setAttendance] = useState('')
   const [revenue, setRevenue] = useState('')
   const [loading, setLoading] = useState(false)
-  const [hoveredCard, setHoveredCard] = useState<number | null>(null)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -88,6 +73,23 @@ export default function Dashboard() {
       console.error('Error creating event:', error)
     }
     setLoading(false)
+  }
+
+  async function deleteEvent(eventId: number) {
+    if (!confirm('Are you sure you want to delete this event?')) return
+    
+    try {
+      const res = await fetch(`/api/events/${eventId}`, {
+        method: 'DELETE',
+      })
+      if (res.ok) {
+        await fetchEvents()
+      } else {
+        console.error('Failed to delete event:', res.status)
+      }
+    } catch (error) {
+      console.error('Error deleting event:', error)
+    }
   }
 
   return (
@@ -254,71 +256,49 @@ export default function Dashboard() {
 
       {/* Events List */}
       {events.length === 0 ? (
-        <motion.div 
-          className="text-center py-20 glass-card rounded-3xl border-2 border-dashed border-white/10"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-        >
-          <motion.div 
-            className="w-20 h-20 bg-gradient-to-br from-psa-green-500/20 to-psa-green-700/20 rounded-full flex items-center justify-center mx-auto mb-6"
-            animate={{ 
-              scale: [1, 1.1, 1],
-              rotate: [0, 5, -5, 0]
-            }}
-            transition={{ duration: 3, repeat: Infinity }}
-          >
+        <div className="text-center py-20 glass-card rounded-3xl border-2 border-dashed border-white/10">
+          <div className="w-20 h-20 bg-gradient-to-br from-psa-green-500/20 to-psa-green-700/20 rounded-full flex items-center justify-center mx-auto mb-6">
             <Plus className="w-10 h-10 text-psa-green-500" />
-          </motion.div>
+          </div>
           <h3 className="text-xl font-display font-semibold text-white mb-2">No events yet</h3>
           <p className="text-white/40 mb-6">Create your first event or load the demo data</p>
-          <motion.button
+          <button
             onClick={() => setShowForm(true)}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
             className="px-6 py-3 bg-gradient-to-r from-psa-green-600 to-psa-green-500 text-white rounded-xl shadow-glow-green"
           >
             Get Started
-          </motion.button>
-        </motion.div>
+          </button>
+        </div>
       ) : (
-        <motion.div 
-          className="grid gap-4"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          {events.map((event, i) => (
-            <motion.div
+        <div className="grid gap-4">
+          {events.map((event) => (
+            <div
               key={event.id}
-              variants={itemVariants}
-              onMouseEnter={() => setHoveredCard(event.id)}
-              onMouseLeave={() => setHoveredCard(null)}
-              className="glass-card rounded-2xl p-6 card-hover relative overflow-hidden group"
+              className="glass-card rounded-2xl p-6 relative overflow-hidden group hover:bg-white/5 transition-all"
             >
-              {/* Hover gradient effect */}
-              <motion.div 
-                className="absolute inset-0 bg-gradient-to-r from-psa-green-500/5 to-psa-gold-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-              />
-              
               {/* Progress bar at top */}
               <div className="absolute top-0 left-0 right-0 h-1 bg-white/5 overflow-hidden">
-                <motion.div
-                  className="h-full bg-gradient-to-r from-psa-green-500 to-psa-gold-500 progress-shine"
-                  initial={{ width: 0 }}
-                  animate={{ width: `${(event.feedback_count / 30) * 100}%` }}
-                  transition={{ duration: 0.8, delay: i * 0.1 }}
+                <div
+                  className="h-full bg-gradient-to-r from-psa-green-500 to-psa-gold-500"
+                  style={{ width: `${(event.feedback_count / 30) * 100}%` }}
                 />
               </div>
+
+              {/* Delete button */}
+              <button
+                onClick={() => deleteEvent(event.id)}
+                className="absolute bottom-3 left-3 p-2 rounded-lg text-white/30 hover:text-red-400 hover:bg-red-500/10 transition-all opacity-0 group-hover:opacity-100"
+                title="Delete event"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
 
               <div className="relative flex items-center justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-3">
-                    <motion.div 
-                      className="w-12 h-12 rounded-xl bg-gradient-to-br from-psa-green-500/20 to-psa-green-700/20 flex items-center justify-center"
-                      animate={hoveredCard === event.id ? { scale: 1.1, rotate: 5 } : { scale: 1, rotate: 0 }}
-                    >
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-psa-green-500/20 to-psa-green-700/20 flex items-center justify-center">
                       <TrendingUp className="w-6 h-6 text-psa-green-500" />
-                    </motion.div>
+                    </div>
                     <div>
                       <h3 className="font-display text-xl font-semibold text-white group-hover:text-psa-green-400 transition-colors">
                         {event.name}
@@ -340,55 +320,44 @@ export default function Dashboard() {
                 <div className="flex items-center gap-4">
                   {/* Feedback counter */}
                   <div className="text-center px-4 py-2 rounded-xl bg-white/5">
-                    <motion.span 
-                      className="text-2xl font-bold text-white"
-                      key={event.feedback_count}
-                      initial={{ scale: 1.2, color: '#D4AF37' }}
-                      animate={{ scale: 1, color: '#ffffff' }}
-                    >
+                    <span className="text-2xl font-bold text-white">
                       {event.feedback_count}
-                    </motion.span>
+                    </span>
                     <span className="text-white/40">/30</span>
                     <p className="text-xs text-white/30 mt-0.5">feedbacks</p>
                   </div>
 
                   {/* Action button */}
                   {event.has_score ? (
-                    <motion.button
+                    <button
                       onClick={() => navigate(`/event/${event.id}/results`)}
-                      whileHover={{ scale: 1.05, x: 5 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-psa-gold-500 to-psa-gold-600 text-white rounded-xl font-medium shadow-glow-gold btn-glow btn-glow-gold"
+                      className="flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-psa-gold-500 to-psa-gold-600 text-white rounded-xl font-medium"
                     >
                       View Results
                       <ChevronRight className="w-4 h-4" />
-                    </motion.button>
+                    </button>
                   ) : event.feedback_count >= 30 ? (
-                    <motion.button
+                    <button
                       onClick={() => navigate(`/event/${event.id}/results`)}
-                      whileHover={{ scale: 1.05, x: 5 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-psa-green-600 to-psa-green-500 text-white rounded-xl font-medium shadow-glow-green btn-glow"
+                      className="flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-psa-green-600 to-psa-green-500 text-white rounded-xl font-medium"
                     >
                       <Sparkles className="w-4 h-4" />
                       Compute Score
-                    </motion.button>
+                    </button>
                   ) : (
-                    <motion.button
+                    <button
                       onClick={() => navigate(`/event/${event.id}/feedback`)}
-                      whileHover={{ scale: 1.05, x: 5 }}
-                      whileTap={{ scale: 0.95 }}
                       className="flex items-center gap-2 px-5 py-3 glass-card text-psa-green-400 rounded-xl font-medium border border-psa-green-500/30 hover:border-psa-green-500/60 hover:bg-psa-green-500/10 transition-all"
                     >
                       Collect Feedback
                       <ChevronRight className="w-4 h-4" />
-                    </motion.button>
+                    </button>
                   )}
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
       )}
     </div>
   )
