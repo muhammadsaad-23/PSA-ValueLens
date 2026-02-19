@@ -42,9 +42,18 @@ export default function Dashboard() {
   }, [])
 
   async function fetchEvents() {
-    const res = await fetch('/api/events')
-    const data = await res.json()
-    setEvents(data)
+    try {
+      const res = await fetch('/api/events')
+      if (!res.ok) {
+        console.error('Failed to fetch events:', res.status)
+        return
+      }
+      const data = await res.json()
+      console.log('Fetched events:', data)
+      setEvents(data)
+    } catch (error) {
+      console.error('Error fetching events:', error)
+    }
   }
 
   async function seedDemo() {
@@ -55,21 +64,28 @@ export default function Dashboard() {
   async function createEvent(e: React.FormEvent) {
     e.preventDefault()
     setLoading(true)
-    const res = await fetch('/api/events', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        name,
-        attendance: parseInt(attendance),
-        revenue: parseFloat(revenue)
+    try {
+      const res = await fetch('/api/events', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          attendance: parseInt(attendance),
+          revenue: parseFloat(revenue)
+        })
       })
-    })
-    if (res.ok) {
-      setName('')
-      setAttendance('')
-      setRevenue('')
-      setShowForm(false)
-      fetchEvents()
+      console.log('Create event response:', res.status)
+      if (res.ok) {
+        setName('')
+        setAttendance('')
+        setRevenue('')
+        setShowForm(false)
+        await fetchEvents()
+      } else {
+        console.error('Failed to create event:', res.status)
+      }
+    } catch (error) {
+      console.error('Error creating event:', error)
     }
     setLoading(false)
   }
