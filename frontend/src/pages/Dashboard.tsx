@@ -42,8 +42,14 @@ export default function Dashboard() {
   }
 
   async function seedDemo() {
-    await fetch('/api/seed-demo', { method: 'POST' })
-    fetchEvents()
+    try {
+      const res = await fetch('/api/seed-demo', { method: 'POST' })
+      const data = await res.json()
+      console.log('Seed demo response:', data)
+      await fetchEvents()
+    } catch (error) {
+      console.error('Error seeding demo:', error)
+    }
   }
 
   async function createEvent(e: React.FormEvent) {
