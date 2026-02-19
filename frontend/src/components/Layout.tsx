@@ -83,14 +83,14 @@ export default function Layout() {
           <div className="flex items-center justify-between">
             <Link to="/" className="flex items-center gap-3 group">
               <motion.div 
-                className="relative w-12 h-12 rounded-xl flex items-center justify-center overflow-hidden"
+                className="relative w-12 h-12 rounded-full flex items-center justify-center overflow-hidden bg-white"
                 whileHover={{ scale: 1.1, rotate: 5 }}
                 whileTap={{ scale: 0.95 }}
               >
                 <img 
                   src="/psa-logo.png" 
                   alt="PSA Logo" 
-                  className="w-full h-full object-contain"
+                  className="w-10 h-10 object-contain"
                 />
               </motion.div>
               <div>
