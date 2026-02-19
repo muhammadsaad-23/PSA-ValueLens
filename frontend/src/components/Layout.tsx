@@ -11,27 +11,33 @@ const navItems = [
 
 // Floating particles component
 function FloatingParticles() {
+  const [mounted, setMounted] = useState(false)
+  
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+  
+  if (!mounted) return null
+  
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
-      {[...Array(15)].map((_, i) => (
+      {[...Array(10)].map((_, i) => (
         <motion.div
           key={i}
           className="absolute w-1 h-1 rounded-full"
           style={{
             background: i % 2 === 0 ? '#D4AF37' : '#22c55e',
-            left: `${Math.random() * 100}%`,
+            left: `${(i * 10) + 5}%`,
             top: '100%',
           }}
           animate={{
-            y: [0, -window.innerHeight * 1.2],
-            x: [0, (Math.random() - 0.5) * 200],
+            y: [0, -1500],
             opacity: [0, 0.6, 0.6, 0],
-            scale: [0, 1, 1, 0],
           }}
           transition={{
-            duration: 10 + Math.random() * 10,
+            duration: 15 + (i * 2),
             repeat: Infinity,
-            delay: Math.random() * 10,
+            delay: i * 1.5,
             ease: 'linear',
           }}
         />
