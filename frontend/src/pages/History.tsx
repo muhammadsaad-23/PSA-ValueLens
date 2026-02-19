@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend, Cell } from 'recharts'
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Legend } from 'recharts'
 import { ArrowUpDown, Eye, Clock, TrendingUp, Award, BarChart3 } from 'lucide-react'
 
 interface HistoryItem {
@@ -190,7 +190,7 @@ export default function History() {
                 </thead>
                 <tbody>
                   <AnimatePresence>
-                    {sorted.map((item, i) => (
+                    {sorted.map((item) => (
                       <motion.tr
                         key={item.id}
                         variants={itemVariants}

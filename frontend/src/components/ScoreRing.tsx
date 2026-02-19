@@ -1,4 +1,4 @@
-import { motion, useMotionValue, useTransform, animate } from 'framer-motion'
+import { motion, animate } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
 interface ScoreRingProps {
@@ -36,7 +36,7 @@ const colors = {
 }
 
 // Animated number counter
-function AnimatedNumber({ value, className }: { value: number; className: string }) {
+function AnimatedNumber({ value, className, color }: { value: number; className: string; color: string }) {
   const [displayValue, setDisplayValue] = useState(0)
   
   useEffect(() => {
@@ -48,7 +48,7 @@ function AnimatedNumber({ value, className }: { value: number; className: string
     return controls.stop
   }, [value])
 
-  return <span className={className}>{displayValue}</span>
+  return <span className={className} style={{ color }}>{displayValue}</span>
 }
 
 export default function ScoreRing({ score, label, size = 'md', color = 'green' }: ScoreRingProps) {
@@ -145,7 +145,7 @@ export default function ScoreRing({ score, label, size = 'md', color = 'green' }
             <AnimatedNumber 
               value={score} 
               className={`font-display font-bold ${text}`}
-              style={{ color: primary }}
+              color={primary}
             />
             <motion.span 
               className={`${text} text-white/30`}
