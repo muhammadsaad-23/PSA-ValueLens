@@ -1,6 +1,6 @@
 import { Outlet, Link, useLocation } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Home, Clock, Settings, Star, Sparkles } from 'lucide-react'
+import { Home, Clock, Settings, Sparkles } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 const navItems = [
@@ -83,15 +83,14 @@ export default function Layout() {
           <div className="flex items-center justify-between">
             <Link to="/" className="flex items-center gap-3 group">
               <motion.div 
-                className="relative w-12 h-12 bg-gradient-to-br from-psa-green-500 to-psa-green-700 rounded-xl flex items-center justify-center shadow-glow-green"
+                className="relative w-12 h-12 rounded-xl flex items-center justify-center overflow-hidden"
                 whileHover={{ scale: 1.1, rotate: 5 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Star className="w-6 h-6 text-psa-gold-500" />
-                <motion.div
-                  className="absolute inset-0 rounded-xl bg-gradient-to-br from-psa-gold-500/20 to-transparent"
-                  animate={{ opacity: [0, 0.5, 0] }}
-                  transition={{ duration: 2, repeat: Infinity }}
+                <img 
+                  src="/psa-logo.png" 
+                  alt="PSA Logo" 
+                  className="w-full h-full object-contain"
                 />
               </motion.div>
               <div>
@@ -99,7 +98,7 @@ export default function Layout() {
                   className="font-display text-xl font-bold gradient-text"
                   whileHover={{ scale: 1.02 }}
                 >
-                  PSA ValueLens
+                  PSA Andaza
                 </motion.h1>
                 <p className="text-white/40 text-xs tracking-wide">
                   UWaterloo Pakistani Students Association
@@ -176,7 +175,7 @@ export default function Layout() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-white/30 text-sm">
               <Sparkles className="w-4 h-4 text-psa-gold-500" />
-              <p>PSA ValueLens • Balancing Revenue & Experience</p>
+              <p>PSA Andaza • Balancing Revenue & Experience</p>
             </div>
             <div className="flex items-center gap-4">
               <motion.div 

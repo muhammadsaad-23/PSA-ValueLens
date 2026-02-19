@@ -173,7 +173,7 @@ export default function Results() {
         <h2 className="font-display text-4xl font-bold gradient-text">{score.event_name}</h2>
         <p className="text-white/50 mt-2 flex items-center gap-2">
           <Zap className="w-4 h-4 text-psa-gold-500" />
-          ValueLens Analysis
+          Andaza Analysis
         </p>
       </motion.div>
 
